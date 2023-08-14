@@ -1905,7 +1905,7 @@ export class SelectQueryBuilder<Entity extends ObjectLiteral>
     /**
      * Executes built SQL query and returns raw data stream.
      */
-    async stream(): Promise<ReadStream> {
+    async stream(config?: Record<string, unknown>): Promise<ReadStream> {
         this.expressionMap.queryEntity = false
         const [sql, parameters] = this.getQueryAndParameters()
         const queryRunner = this.obtainQueryRunner()
@@ -1931,6 +1931,7 @@ export class SelectQueryBuilder<Entity extends ObjectLiteral>
                 parameters,
                 releaseFn,
                 releaseFn,
+                config
             )
 
             // close transaction if we started it

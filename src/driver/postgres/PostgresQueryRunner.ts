@@ -308,6 +308,12 @@ export class PostgresQueryRunner
         parameters?: any[],
         onEnd?: Function,
         onError?: Function,
+        config?: {
+            batchSize?: number
+            highWaterMark?: number
+            rowMode?: 'array'
+            types?: any
+        }
     ): Promise<ReadStream> {
         const QueryStream = this.driver.loadStreamDependency()
         if (this.isReleased) throw new QueryRunnerAlreadyReleasedError()
@@ -315,7 +321,7 @@ export class PostgresQueryRunner
         const databaseConnection = await this.connect()
         this.driver.connection.logger.logQuery(query, parameters, this)
         const stream = databaseConnection.query(
-            new QueryStream(query, parameters),
+            new QueryStream(query, parameters, config),
         )
         if (onEnd) stream.on("end", onEnd)
         if (onError) stream.on("error", onError)

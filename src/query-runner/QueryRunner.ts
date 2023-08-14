@@ -134,6 +134,7 @@ export interface QueryRunner {
         parameters?: any[],
         onEnd?: Function,
         onError?: Function,
+        config?: Record<string, unknown>
     ): Promise<ReadStream>
 
     /**
